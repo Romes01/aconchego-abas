@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Aconchego - Gráficos e Análises</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <h1 class="text-4xl font-bold text-accent mb-8">Gráficos e Análises</h1>
+        <div class="space-y-8">
+            <!-- Gráfico de Vendas Mensais -->
+            <div class="bg-card rounded-lg p-8 border border-border">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-accent">Vendas Mensais</h3>
+                    <div class="flex gap-2">
+                        <button
+                            id="btn-vendas"
+                            class="px-4 py-2 rounded-lg transition bg-accent text-accent-foreground"
+                        >
+                            Vendas
+                        </button>
+                        <button
+                            id="btn-lucro"
+                            class="px-4 py-2 rounded-lg transition bg-muted text-muted-foreground hover:bg-muted/80"
+                        >
+                            Lucro
+                        </button>
+                    </div>
+                </div>
+
+                <div id="grafico-barras" class="h-80 flex items-end gap-4 mb-6">
+                    <!-- Barras serão injetadas pelo JS -->
+                </div>
+
+                <div id="resumo-barras" class="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+                    <!-- Resumo será injetado pelo JS -->
+                </div>
+            </div>
+
+            <!-- Gráfico de Pizza - Vendas por Categoria -->
+            <div class="bg-card rounded-lg p-8 border border-border">
+                <h3 class="text-2xl font-bold text-accent mb-6">Vendas por Categoria</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Pizza -->
+                    <div class="flex justify-center items-center">
+                        <div class="relative w-64 h-64">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <!-- Bebidas - 65% -->
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="40"
+                                    fill="none"
+                                    stroke="oklch(0.55 0.15 40)"
+                                    stroke-width="30"
+                                    stroke-dasharray="163.15 251"
+                                    stroke-dashoffset="0"
+                                    transform="rotate(-90 50 50)"
+                                />
+                                <!-- Alimentos - 35% -->
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="40"
+                                    fill="none"
+                                    stroke="oklch(0.85 0.05 50)"
+                                    stroke-width="30"
+                                    stroke-dasharray="87.85 251"
+                                    stroke-dashoffset="-163.15"
+                                    transform="rotate(-90 50 50)"
+                                />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <p class="text-3xl font-bold text-accent">100%</p>
+                                    <p class="text-sm text-muted-foreground">Total</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legenda -->
+                    <div class="flex flex-col justify-center space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-6 h-6 rounded" style="background-color: oklch(0.55 0.15 40)"></div>
+                            <div class="flex-1">
+                                <p class="font-semibold">Bebidas</p>
+                                <p class="text-sm text-muted-foreground">65% das vendas</p>
+                            </div>
+                            <p class="text-lg font-bold text-accent">65%</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-6 h-6 rounded" style="background-color: oklch(0.85 0.05 50)"></div>
+                            <div class="flex-1">
+                                <p class="font-semibold">Alimentos</p>
+                                <p class="text-sm text-muted-foreground">35% das vendas</p>
+                            </div>
+                            <p class="text-lg font-bold text-accent">35%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top 5 Produtos -->
+            <div class="bg-card rounded-lg p-8 border border-border">
+                <h3 class="text-2xl font-bold text-accent mb-6">Top 5 Produtos Mais Vendidos</h3>
+
+                <div id="top-produtos" class="space-y-4">
+                    <!-- Produtos serão injetados pelo JS -->
+                </div>
+            </div>
+
+            <!-- Estatísticas Gerais -->
+            <div id="estatisticas-gerais" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Estatísticas serão injetadas pelo JS -->
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        const DADOS_VENDAS = [
+            { mes: "Jan", vendas: 2400, lucro: 1200 },
+            { mes: "Fev", vendas: 2800, lucro: 1400 },
+            { mes: "Mar", vendas: 3200, lucro: 1600 },
+            { mes: "Abr", vendas: 2900, lucro: 1450 },
+            { mes: "Mai", vendas: 3500, lucro: 1750 },
+            { mes: "Jun", vendas: 4100, lucro: 2050 },
+        ];
+
+        const PRODUTOS_TOP = [
+            { nome: "Café Expresso", vendas: 320 },
+            { nome: "Cappuccino", vendas: 280 },
+            { nome: "Café Coado", vendas: 250 },
+            { nome: "Croissant", vendas: 180 },
+            { nome: "Latte", vendas: 160 },
+        ];
+
+        let selectedMetrica = "vendas";
+
+        const graficoBarras = document.getElementById('grafico-barras');
+        const resumoBarras = document.getElementById('resumo-barras');
+        const btnVendas = document.getElementById('btn-vendas');
+        const btnLucro = document.getElementById('btn-lucro');
+        const topProdutosDiv = document.getElementById('top-produtos');
+        const estatisticasGeraisDiv = document.getElementById('estatisticas-gerais');
+
+        function formatCurrency(value) {
+            return value.toLocaleString("pt-BR", { style: 'currency', currency: 'BRL' });
+        }
+
+        function renderBarChart() {
+            const dados = DADOS_VENDAS.map(d => d[selectedMetrica]);
+            const maxValor = Math.max(...dados);
+
+            graficoBarras.innerHTML = DADOS_VENDAS.map((dado) => {
+                const valor = dado[selectedMetrica];
+                const altura = (valor / maxValor) * 100;
+                const valorFormatado = formatCurrency(valor);
+
+                return `
+                    <div class="flex-1 flex flex-col items-center h-full justify-end">
+                        <div class="w-full bg-accent rounded-t-lg relative group transition-all duration-500" style="height: ${altura}%;">
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+                                ${valorFormatado}
+                            </div>
+                        </div>
+                        <p class="mt-2 text-sm font-semibold text-foreground">${dado.mes}</p>
+                    </div>
+                `;
+            }).join('');
+
+            // Renderizar Resumo
+            const total = DADOS_VENDAS.reduce((sum, d) => sum + d[selectedMetrica], 0);
+            const media = total / DADOS_VENDAS.length;
+            const maximo = maxValor;
+
+            resumoBarras.innerHTML = `
+                <div>
+                    <p class="text-muted-foreground text-sm mb-1">Total</p>
+                    <p class="text-2xl font-bold text-accent">${formatCurrency(total)}</p>
+                </div>
+                <div>
+                    <p class="text-muted-foreground text-sm mb-1">Média</p>
+                    <p class="text-2xl font-bold text-accent">${formatCurrency(Math.round(media))}</p>
+                </div>
+                <div>
+                    <p class="text-muted-foreground text-sm mb-1">Máximo</p>
+                    <p class="text-2xl font-bold text-accent">${formatCurrency(maximo)}</p>
+                </div>
+            `;
+
+            // Atualizar botões
+            btnVendas.className = `px-4 py-2 rounded-lg transition ${selectedMetrica === "vendas" ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`;
+            btnLucro.className = `px-4 py-2 rounded-lg transition ${selectedMetrica === "lucro" ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`;
+        }
+
+        function renderTopProducts() {
+            const maxVendas = Math.max(...PRODUTOS_TOP.map((p) => p.vendas));
+
+            topProdutosDiv.innerHTML = PRODUTOS_TOP.map((produto, index) => {
+                const percentual = (produto.vendas / maxVendas) * 100;
+
+                return `
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="flex items-center gap-3">
+                                <span class="text-lg font-bold text-accent w-8">#${index + 1}</span>
+                                <p class="font-semibold">${produto.nome}</p>
+                            </div>
+                            <p class="font-bold text-accent">${produto.vendas} vendas</p>
+                        </div>
+                        <div class="w-full bg-muted rounded-full h-3 overflow-hidden">
+                            <div
+                                class="bg-accent h-full rounded-full transition-all"
+                                style="width: ${percentual}%"
+                            ></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderGeneralStats() {
+            const totalVendas = DADOS_VENDAS.reduce((sum, d) => sum + d.vendas, 0);
+            const totalLucro = DADOS_VENDAS.reduce((sum, d) => sum + d.lucro, 0);
+            const margemMedia = Math.round((totalLucro / totalVendas) * 100);
+
+            estatisticasGeraisDiv.innerHTML = `
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Total de Vendas (6 meses)</p>
+                    <p class="text-3xl font-bold text-accent">${formatCurrency(totalVendas)}</p>
+                </div>
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Total de Lucro (6 meses)</p>
+                    <p class="text-3xl font-bold text-accent">${formatCurrency(totalLucro)}</p>
+                </div>
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Margem Média</p>
+                    <p class="text-3xl font-bold text-accent">${margemMedia}%</p>
+                </div>
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Produtos Únicos</p>
+                    <p class="text-3xl font-bold text-accent">${PRODUTOS_TOP.length}</p>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBarChart();
+            renderTopProducts();
+            renderGeneralStats();
+
+            btnVendas.addEventListener('click', () => {
+                selectedMetrica = "vendas";
+                renderBarChart();
+            });
+
+            btnLucro.addEventListener('click', () => {
+                selectedMetrica = "lucro";
+                renderBarChart();
+            });
+        });
+    </script>
+</body>
+</html>

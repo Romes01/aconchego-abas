@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Aconchego - Tabela Dinâmica</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="layout">
+        <h1 class="text-4xl font-bold text-accent mb-8">Tabela Dinâmica de Produtos</h1>
+        <div class="space-y-6">
+            <!-- Filtros -->
+            <div class="bg-card rounded-lg p-6 border border-border space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Busca -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Buscar Produto</label>
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-3 top-3 w-5 h-5 text-muted-foreground"></i>
+                            <input
+                                type="text"
+                                id="search-term"
+                                placeholder="Digite o nome..."
+                                class="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Filtro por Categoria -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Categoria</label>
+                        <select
+                            id="filter-category"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                        >
+                            <!-- Opções serão preenchidas pelo JS -->
+                        </select>
+                    </div>
+
+                    <!-- Ordenação -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Ordenar por</label>
+                        <div class="flex gap-2">
+                            <select
+                                id="sort-by"
+                                class="flex-1 px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            >
+                                <option value="nome">Nome</option>
+                                <option value="preco">Preço</option>
+                                <option value="vendas">Vendas</option>
+                            </select>
+                            <button
+                                id="sort-order-btn"
+                                class="button variant-outline px-4"
+                            >
+                                ↑
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela -->
+            <div class="bg-card rounded-lg border border-border overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-muted border-b border-border">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Produto</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Categoria</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold">Preço</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold">Estoque</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold">Vendas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-produtos">
+                            <!-- Linhas serão preenchidas pelo JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Resumo -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="resumo-produtos">
+                <!-- Cards de resumo serão preenchidos pelo JS -->
+            </div>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="js/main.js"></script>
+    <script>
+        const PRODUTOS_INICIAIS = [
+            { id: 1, nome: "Café Expresso", categoria: "Bebidas", preco: 4.50, estoque: 150, vendas: 320 },
+            { id: 2, nome: "Cappuccino", categoria: "Bebidas", preco: 6.00, estoque: 120, vendas: 280 },
+            { id: 3, nome: "Latte", categoria: "Bebidas", preco: 6.50, estoque: 100, vendas: 250 },
+            { id: 4, nome: "Café Coado", categoria: "Bebidas", preco: 3.50, estoque: 200, vendas: 400 },
+            { id: 5, nome: "Bolo de Chocolate", categoria: "Alimentos", preco: 8.00, estoque: 45, vendas: 120 },
+            { id: 6, nome: "Croissant", categoria: "Alimentos", preco: 5.50, estoque: 60, vendas: 180 },
+            { id: 7, nome: "Pão de Queijo", categoria: "Alimentos", preco: 4.00, estoque: 80, vendas: 200 },
+            { id: 8, nome: "Brownie", categoria: "Alimentos", preco: 6.00, estoque: 50, vendas: 140 },
+            { id: 9, nome: "Suco Natural", categoria: "Bebidas", preco: 5.00, estoque: 90, vendas: 160 },
+            { id: 10, nome: "Chá Quente", categoria: "Bebidas", preco: 3.00, estoque: 110, vendas: 220 },
+        ];
+
+        let produtos = [...PRODUTOS_INICIAIS];
+        let searchTerm = "";
+        let filterCategory = "todos";
+        let sortBy = "nome";
+        let sortOrder = "asc";
+
+        const tabelaProdutos = document.getElementById('tabela-produtos');
+        const resumoProdutos = document.getElementById('resumo-produtos');
+        const searchInput = document.getElementById('search-term');
+        const categorySelect = document.getElementById('filter-category');
+        const sortBySelect = document.getElementById('sort-by');
+        const sortOrderBtn = document.getElementById('sort-order-btn');
+
+        function renderTable(data) {
+            tabelaProdutos.innerHTML = data.map(produto => {
+                let estoqueClass = "bg-red-100 text-red-800";
+                if (produto.estoque > 50) {
+                    estoqueClass = "bg-green-100 text-green-800";
+                } else if (produto.estoque > 20) {
+                    estoqueClass = "bg-yellow-100 text-yellow-800";
+                }
+
+                return `
+                    <tr class="border-b border-border hover:bg-muted/50 transition">
+                        <td class="px-6 py-4 text-sm font-medium">${produto.nome}</td>
+                        <td class="px-6 py-4 text-sm text-muted-foreground">${produto.categoria}</td>
+                        <td class="px-6 py-4 text-sm text-right font-semibold">R$ ${produto.preco.toFixed(2).replace('.', ',')}</td>
+                        <td class="px-6 py-4 text-sm text-right">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${estoqueClass}">
+                                ${produto.estoque}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-right">${produto.vendas}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderSummary(data) {
+            const totalProdutos = data.length;
+            const precoMedio = data.length > 0 ? (data.reduce((sum, p) => sum + p.preco, 0) / data.length) : 0;
+            const totalEstoque = data.reduce((sum, p) => sum + p.estoque, 0);
+            const totalVendas = data.reduce((sum, p) => sum + p.vendas, 0);
+
+            resumoProdutos.innerHTML = `
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Total de Produtos</p>
+                    <p class="text-3xl font-bold text-accent">${totalProdutos}</p>
+                </div>
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Preço Médio</p>
+                    <p class="text-3xl font-bold text-accent">R$ ${precoMedio.toFixed(2).replace('.', ',')}</p>
+                </div>
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Total em Estoque</p>
+                    <p class="text-3xl font-bold text-accent">${totalEstoque}</p>
+                </div>
+                <div class="bg-card rounded-lg p-6 border border-border">
+                    <p class="text-muted-foreground text-sm mb-2">Total de Vendas</p>
+                    <p class="text-3xl font-bold text-accent">${totalVendas}</p>
+                </div>
+            `;
+        }
+
+        function filterAndSort() {
+            let filtered = produtos.filter(p => {
+                const matchesSearch = p.nome.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesCategory = filterCategory === "todos" || p.categoria === filterCategory;
+                return matchesSearch && matchesCategory;
+            });
+
+            filtered.sort((a, b) => {
+                let aVal = a[sortBy];
+                let bVal = b[sortBy];
+
+                if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                }
+
+                if (sortOrder === "asc") {
+                    return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+                } else {
+                    return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+                }
+            });
+
+            renderTable(filtered);
+            renderSummary(filtered);
+        }
+
+        function setupCategories() {
+            const categorias = ["todos", ...Array.from(new Set(PRODUTOS_INICIAIS.map(p => p.categoria)))];
+            categorySelect.innerHTML = categorias.map(cat => `
+                <option value="${cat}">
+                    ${cat === "todos" ? "Todas as categorias" : cat}
+                </option>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupCategories();
+            filterAndSort(); // Renderiza a tabela inicial
+
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                filterAndSort();
+            });
+
+            categorySelect.addEventListener('change', (e) => {
+                filterCategory = e.target.value;
+                filterAndSort();
+            });
+
+            sortBySelect.addEventListener('change', (e) => {
+                sortBy = e.target.value;
+                filterAndSort();
+            });
+
+            sortOrderBtn.addEventListener('click', () => {
+                sortOrder = sortOrder === "asc" ? "desc" : "asc";
+                sortOrderBtn.textContent = sortOrder === "asc" ? "↑" : "↓";
+                filterAndSort();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Aconchego - Cadastro Estudantil</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <h1 class="text-4xl font-bold text-accent mb-8">Cadastro Estudantil</h1>
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-card rounded-lg p-8 border border-border">
+                <p class="text-muted-foreground mb-6">
+                    Preencha o formulário abaixo para realizar seu cadastro estudantil. Oferecemos descontos especiais para estudantes!
+                </p>
+
+                <form id="form-cadastro-estudantil" class="space-y-6">
+                    <div>
+                        <label for="nome" class="block text-sm font-semibold mb-2">
+                            Nome Completo *
+                        </label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            placeholder="Seu nome completo"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-semibold mb-2">
+                            Email *
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            placeholder="seu.email@exemplo.com"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="telefone" class="block text-sm font-semibold mb-2">
+                            Telefone
+                        </label>
+                        <input
+                            type="tel"
+                            id="telefone"
+                            name="telefone"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            placeholder="(11) 9999-9999"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="matricula" class="block text-sm font-semibold mb-2">
+                            Matrícula *
+                        </label>
+                        <input
+                            type="text"
+                            id="matricula"
+                            name="matricula"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            placeholder="Número de matrícula"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="instituicao" class="block text-sm font-semibold mb-2">
+                            Instituição de Ensino
+                        </label>
+                        <input
+                            type="text"
+                            id="instituicao"
+                            name="instituicao"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            placeholder="Nome da universidade ou escola"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="curso" class="block text-sm font-semibold mb-2">
+                            Curso
+                        </label>
+                        <input
+                            type="text"
+                            id="curso"
+                            name="curso"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                            placeholder="Seu curso"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="periodo" class="block text-sm font-semibold mb-2">
+                            Período
+                        </label>
+                        <select
+                            id="periodo"
+                            name="periodo"
+                            class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+                        >
+                            <option value="">Selecione o período</option>
+                            <option value="1">1º período</option>
+                            <option value="2">2º período</option>
+                            <option value="3">3º período</option>
+                            <option value="4">4º período</option>
+                            <option value="5">5º período</option>
+                            <option value="6">6º período</option>
+                            <option value="7">7º período</option>
+                            <option value="8">8º período ou mais</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" class="flex-1 button bg-accent text-accent-foreground hover:bg-accent/90">
+                            Cadastrar
+                        </button>
+                        <button
+                            type="button"
+                            id="btn-limpar"
+                            class="flex-1 button variant-outline"
+                        >
+                            Limpar
+                        </button>
+                    </div>
+                </form>
+
+                <div id="mensagem-sucesso" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800 hidden">
+                    Cadastro estudantil realizado com sucesso! Aproveite nossos descontos especiais.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-cadastro-estudantil');
+            const btnLimpar = document.getElementById('btn-limpar');
+            const mensagemSucesso = document.getElementById('mensagem-sucesso');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Simulação de validação e salvamento
+                const nome = document.getElementById('nome').value;
+                const email = document.getElementById('email').value;
+                const matricula = document.getElementById('matricula').value;
+
+                if (!nome || !email || !matricula) {
+                    alert("Por favor, preencha todos os campos obrigatórios (Nome, Email, Matrícula).");
+                    return;
+                }
+
+                // Simulação de salvamento no localStorage
+                const formData = {
+                    nome: nome,
+                    email: email,
+                    telefone: document.getElementById('telefone').value,
+                    matricula: matricula,
+                    instituicao: document.getElementById('instituicao').value,
+                    curso: document.getElementById('curso').value,
+                    periodo: document.getElementById('periodo').value,
+                    id: Date.now()
+                };
+
+                const cadastros = JSON.parse(localStorage.getItem("cadastrosEstudantis") || "[]");
+                cadastros.push(formData);
+                localStorage.setItem("cadastrosEstudantis", JSON.stringify(cadastros));
+
+                // Exibir mensagem de sucesso
+                mensagemSucesso.classList.remove('hidden');
+                form.reset();
+                
+                setTimeout(() => {
+                    mensagemSucesso.classList.add('hidden');
+                }, 3000);
+            });
+
+            btnLimpar.addEventListener('click', () => {
+                form.reset();
+                mensagemSucesso.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

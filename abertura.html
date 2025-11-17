@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Aconchego - Nossa História</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="layout">
+        <h1 class="text-4xl font-bold text-accent mb-8">Nossa História</h1>
+        <div class="space-y-12">
+            <!-- Introdução -->
+            <section class="bg-card rounded-lg p-8 md:p-12 border border-border">
+                <h2 class="text-3xl font-bold text-accent mb-6">Bem-vindo ao Café Aconchego</h2>
+                <p class="text-lg text-muted-foreground leading-relaxed mb-4">
+                    Nascido da paixão por grãos especiais, o Café Aconchego é um lugar para pausar, respirar e aproveitar o momento. 
+                    Usamos apenas grãos 100% arábica, torrados aqui mesmo para garantir o máximo de sabor e frescor em cada xícara.
+                </p>
+                <p class="text-lg text-muted-foreground leading-relaxed">
+                    Nosso objetivo é criar um espaço onde cada cliente se sinta em casa, cercado por um ambiente rústico, confortável 
+                    e acolhedor. Aqui, o café é mais que uma bebida – é uma experiência.
+                </p>
+            </section>
+
+            <!-- Informações Principais -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Horário de Funcionamento -->
+                <div class="bg-card rounded-lg p-8 border border-border">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="clock" class="w-8 h-8 text-accent"></i>
+                        <h3 class="text-2xl font-bold text-accent">Horário de Funcionamento</h3>
+                    </div>
+                    <ul class="space-y-3 text-muted-foreground">
+                        <li class="flex justify-between">
+                            <span class="font-semibold">Segunda a Sexta:</span>
+                            <span>7:00 - 20:00</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="font-semibold">Sábado:</span>
+                            <span>8:00 - 21:00</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="font-semibold">Domingo:</span>
+                            <span>9:00 - 19:00</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Localização e Contato -->
+                <div class="bg-card rounded-lg p-8 border border-border">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="map-pin" class="w-8 h-8 text-accent"></i>
+                        <h3 class="text-2xl font-bold text-accent">Localização</h3>
+                    </div>
+                    <p class="text-muted-foreground mb-4">
+                        <strong>Rua das Flores, 123</strong>
+                        <br>
+                        Centro - Franca, SP
+                        <br>
+                        CEP: 14400-000
+                    </p>
+                    <div class="flex items-center gap-3 mt-6">
+                        <i data-lucide="phone" class="w-5 h-5 text-accent"></i>
+                        <span class="text-muted-foreground">(16) 3000-0000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nossos Valores -->
+            <section class="bg-card rounded-lg p-8 md:p-12 border border-border">
+                <h3 class="text-3xl font-bold text-accent mb-8 text-center">Nossos Valores</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <i data-lucide="coffee" class="w-12 h-12 text-accent mx-auto mb-4"></i>
+                        <h4 class="text-xl font-bold text-accent mb-3">Qualidade</h4>
+                        <p class="text-muted-foreground">
+                            Selecionamos os melhores grãos de café do mundo e os torrados com perfeição.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <i data-lucide="coffee" class="w-12 h-12 text-accent mx-auto mb-4"></i>
+                        <h4 class="text-xl font-bold text-accent mb-3">Acolhimento</h4>
+                        <p class="text-muted-foreground">
+                            Cada cliente é bem-vindo e tratado como parte da nossa família.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <i data-lucide="coffee" class="w-12 h-12 text-accent mx-auto mb-4"></i>
+                        <h4 class="text-xl font-bold text-accent mb-3">Sustentabilidade</h4>
+                        <p class="text-muted-foreground">
+                            Comprometidos com práticas sustentáveis e responsáveis.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cardápio Resumido -->
+            <section class="bg-card rounded-lg p-8 md:p-12 border border-border">
+                <h3 class="text-3xl font-bold text-accent mb-8 text-center">Nosso Cardápio</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-2xl font-bold text-accent mb-6">Bebidas</h4>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Espresso</span>
+                                <span class="font-semibold text-accent">R$ 5,00</span>
+                            </li>
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Cappuccino</span>
+                                <span class="font-semibold text-accent">R$ 8,00</span>
+                            </li>
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Latte</span>
+                                <span class="font-semibold text-accent">R$ 8,00</span>
+                            </li>
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Chá Gelado da Casa</span>
+                                <span class="font-semibold text-accent">R$ 7,00</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-muted-foreground">Água com Gás</span>
+                                <span class="font-semibold text-accent">R$ 5,00</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold text-accent mb-6">Comidas</h4>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Pão de Queijo (Porção)</span>
+                                <span class="font-semibold text-accent">R$ 6,00</span>
+                            </li>
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Bolo de Cenoura com Chocolate</span>
+                                <span class="font-semibold text-accent">R$ 10,00</span>
+                            </li>
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Torta de Frango</span>
+                                <span class="font-semibold text-accent">R$ 12,00</span>
+                            </li>
+                            <li class="flex justify-between pb-3 border-b border-border">
+                                <span class="text-muted-foreground">Croissant de Chocolate</span>
+                                <span class="font-semibold text-accent">R$ 7,00</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-muted-foreground">Brownie de Chocolate</span>
+                                <span class="font-semibold text-accent">R$ 8,00</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
